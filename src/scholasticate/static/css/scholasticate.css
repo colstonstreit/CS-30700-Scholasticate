@@ -1,0 +1,275 @@
+/* Login Page */
+.title { 
+	color:rgba(250, 250, 250, 1);
+	width:854px;
+	height:144px;
+	position:absolute;
+	left:293px;
+	top:8px;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align:center;
+	font-size:144px;
+	letter-spacing:0;
+}
+.usernameTextBox { 
+	background-color:rgba(250.00000029802322, 250.00000029802322, 250.00000029802322, 1);
+	width:380px;
+	height:52px;
+	position:absolute;
+	left:340px;
+	top:270px;
+}
+
+.loginUsernameText { 
+	color:rgba(255, 255, 255, 1);
+	width:220px;
+	height:28px;
+	position:absolute;
+	left:275px;
+	top:225px;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align:center;
+	font-size:36px;
+	letter-spacing:0;
+}
+.passwordTextBox { 
+	background-color:rgba(250.00000029802322, 250.00000029802322, 250.00000029802322, 1);
+	width:380px;
+	height:52px;
+	position:absolute;
+	left:340px;
+	top:400px;
+}
+.passwordText { 
+	color:rgba(255, 255, 255, 1);
+	width:220px;
+	height:28px;
+	position:absolute;
+	left:309px;
+	top:355px;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align:center;
+	font-size:36px;
+	letter-spacing:0;
+}
+.signUpText { 
+	color:rgba(255, 255, 255, 1);
+	width:341px;
+	height:28px;
+	position:absolute;
+	left:868px;
+	top:216px;
+	font-family: Arial, Helvetica, sans-serif;
+	text-align:left;
+	font-size:36px;
+	letter-spacing:0;
+}
+.loginButton { 
+	background-color:rgba(196.00000351667404, 196.00000351667404, 196.00000351667404, 1);
+	width:215px;
+	height:56px;
+	position:absolute;
+	left:340px;
+	top:509px;
+}
+.registerButton { 
+	background-color:rgba(196.00000351667404, 196.00000351667404, 196.00000351667404, 1);
+	width:215px;
+	height:56px;
+	position:absolute;
+	left:868px;
+	top:264px;
+}
+.loginText { 
+	color:rgba(250.00000029802322, 250.00000029802322, 250.00000029802322, 1);
+	width:93px;
+	height:36px;
+	position:absolute;
+	left:401px;
+	top:519px;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align:center;
+	font-size:36px;
+	letter-spacing:0;
+}
+.registerText { 
+	color:rgba(250.00000029802322, 250.00000029802322, 250.00000029802322, 1);
+	width:133px;
+	height:36px;
+	position:absolute;
+	left:909px;
+	top:272px;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align:center;
+	font-size:36px;
+	letter-spacing:0;
+}
+.forgotPassword { 
+	color:rgba(6.000000117346644, 69.00000348687172, 173.00000488758087, 1);
+	width:208px;
+	height:24px;
+	position:absolute;
+	left:545px;
+	top:469px;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align:center;
+	font-size:18px;
+	letter-spacing:0;
+}
+.forgotUsername { 
+	color:rgba(6.000000117346644, 69.00000348687172, 173.00000488758087, 1);
+	width:208px;
+	height:24px;
+	position:absolute;
+	left:319px;
+	top:469px;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align:center;
+	font-size:18px;
+	letter-spacing:0;
+}
+/* End of Login page */
+
+/* Forgot password page */
+
+.emailText { 
+	color:rgba(255, 255, 255, 1);
+	width:93px;
+	height:36px;
+	position:absolute;
+	left:340px;
+	top:223px;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align:center;
+	font-size:36px;
+	letter-spacing:0;
+}
+.emailButton { 
+	background-color:rgba(196.00000351667404, 196.00000351667404, 196.00000351667404, 1);
+	width:215px;
+	height:56px;
+	position:absolute;
+	left:340px;
+	top:361px;
+}
+.sendText { 
+	color:rgba(250.00000029802322, 250.00000029802322, 250.00000029802322, 1);
+	width:81px;
+	height:36px;
+	position:absolute;
+	left:407px;
+	top:371px;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align:center;
+	font-size:36px;
+	letter-spacing:0;
+}
+
+/* End of forgot password page */
+
+/* Buttons */
+.greenButton, .cancelButton, .proceedButton {
+	position:absolute;
+	width:20%;
+	height:5%;
+	left:40%;
+
+	/* Default button border */
+	border-top-left-radius:40px;
+	border-top-right-radius:40px;
+	border-bottom-left-radius:40px;
+	border-bottom-right-radius:40px;
+	border:1px solid rgba(0, 0, 0, 1);
+
+	/* Default button text */
+	font-family:Arial, Helvetica, sans-serif;
+	color:rgba(0, 0, 0, 1);
+	text-align:center;
+	font-size:20px;
+	letter-spacing:0.1;
+	line-height:px;
+}
+
+.greenButton { 
+	background-color:rgb(74, 228, 99);
+	top:560px;
+}
+
+.cancelButton { 
+	background-color:rgb(219, 77, 77);
+	top:630px;
+}
+
+.proceedButton { 
+	background-color:rgb(39, 192, 219);
+	top:560px;
+}
+
+/* End of buttons */
+
+/* Text and titles */
+
+.fieldNameText { 
+	color:rgb(0, 0, 0);
+	width:200px;
+	height:24px;
+	position:absolute;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align:left;
+	font-size:18px;
+	letter-spacing:0.1;
+	line-height:px;
+}
+
+.centeredTitle {
+	color:rgba(250, 250, 250, 1);
+	position:absolute;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align:center;
+	font-size:100px;
+	letter-spacing:0;
+	width:40%;
+	height:10%;
+	left:30%;
+	top:10%;
+}
+
+/* End of text and titles */
+
+/* Boxes */
+
+.fieldBox, .messageBox {
+	position:absolute;
+
+	/* Border */
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	border:1px solid rgba(0, 0, 0, 1);
+
+	/* Text Formatting */
+	color:rgb(124, 118, 118);
+	font-family:Arial, Helvetica, sans-serif;
+	text-align:left;
+	font-size:14px;
+	letter-spacing:0.20000000298023224;
+	line-height:px;
+
+}
+
+.fieldBox { 
+	background-color:rgb(255, 255, 255);
+	width:450px;
+	height:50px;
+}
+
+.messageBox { 
+	background-color:rgb(102, 167, 204);
+	width:40%;
+	height:166px;
+	top:35%;
+	left:30%;
+}
+
+/* End of boxes */

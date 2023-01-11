@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %} Settings {% endblock %}
+{% block content %}
+
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/settings.css') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=0.5">
+</head>
+
+<h1>Location Preferences</h1>
+<div id="locationPrefs">
+  <label for="AutomaticUpdates">Automatic Updates: </label>
+  <input type="checkbox" id="AutomaticUpdates" name="LocationUpdatePreferences"
+    onchange="document.getElementById('refreshRateSetter').style.display = this.checked ? 'block' : 'none';">
+  <div id="refreshRateSetter">
+    <br>
+    <label for="slider">Location Refresh Rate:</label><br>
+    <input type="range" min="15" max="300" value="60" class="slider" id="automaticUpdateFrequencySlider"
+      oninput="document.getElementById('sliderValue').innerText = `${this.value} seconds`;">
+    <span id="sliderValue">60 seconds</span>
+  </div>
+</div>
+
+<h1>Security Preferences</h1>
+<div id="securityPrefs">
+  <form action="{{ url_for('setQuestionnaire', id=id) }}">
+    <input type="submit" id="actionSQ" value="Set Security Question">
+  </form>
+
+  <form action="{{ url_for('auth.changePassword') }}">
+    <input type="submit" id="actionP" value="Change Password">
+  </form>
+</div>
+
+<h1>Notification Preferences</h1>
+<p>If you want to receive notifications for a certain event, check the box.</p>
+<div id="notificationPrefs">
+
+  <input type="checkbox" id="MemberJoinedGroup">
+  <label for="MemberJoinedGroup">Member Joined Group</label><br>
+
+  <input type="checkbox" id="MemberLeftGroup">
+  <label for="MemberLeftGroup">Member Left Group</label><br>
+
+  <input type="checkbox" id="InvitedToGroup">
+  <label for="InvitedToGroup">Invited To Join Group</label><br>
+
+  <input type="checkbox" id="ReceivedFriendRequest">
+  <label for="ReceivedFriendRequest">Received Friend Requests</label><br>
+
+  <input type="checkbox" id="AcceptedFriendRequest">
+  <label for="AcceptedFriendRequest">Accepted Friend Requests</label><br>
+
+  <input type="checkbox" id="UnreadDirectMessage">
+  <label for="UnreadDirectMessage">Unread Direct Messages</label><br>
+
+  <input type="checkbox" id="UnreadGroupMessage">
+  <label for="UnreadGroupMessage">Unread Group Messages</label><br>
+
+  <input type="checkbox" id="UpcomingStudySession">
+  <label for="UpcomingStudySession">Upcoming Study Sessions</label><br>
+</div><br>
+
+<button id="submit" onclick="submitSettings();">Save Settings</button>
+
+<script>
+
+  setUIOnLoad();
+
+  function setUIOnLoad() {
+    // Update Notification Preferences UI
+    types = ['MemberJoinedGroup', 'MemberLeftGroup', 'InvitedToGroup', 'ReceivedFriendRequest',
+             'AcceptedFriendRequest', 'UnreadDirectMessage', 'UnreadGroupMessage', 'UpcomingStudySession'];
+    for (let type of types) {
+      let checkbox = document.getElementById(type);
+      checkbox.checked = UserInfo.settings.notifications[type] == 1 || UserInfo.settings.notifications[type] == undefined; // Checked by default
+    }
+
+    // Update Location Preferences UI
+    document.getElementById("AutomaticUpdates").checked = UserInfo.settings.refresh['AutomaticUpdates'] == 1;
+    document.getElementById("refreshRateSetter").style.display = UserInfo.settings.refresh['AutomaticUpdates'] == 1 ? "block" : "none";
+    document.getElementById("automaticUpdateFrequencySlider").value = UserInfo.settings.refresh['RefreshRate'];
+    document.getElementById("sliderValue").innerText = `${UserInfo.settings.refresh['RefreshRate']} seconds`;
+  }
+
+  function isChecked(elementId) {
+    let checked = false;
+    let element = document.getElementById(elementId);
+    if (element != null) {
+      checked = element.checked;
+    } else console.error("No element with id " + elementId);
+    return checked ? 1 : 0;
+  }
+
+  function submitSettings() {
+    let userID = window.sessionStorage.getItem('userID');
+    if (userID == null) return;
+
+    let settings = {
+      notifications: {
+        "MemberJoinedGroup": isChecked("MemberJoinedGroup"),
+        "MemberLeftGroup": isChecked("MemberLeftGroup"),
+        "InvitedToGroup": isChecked("InvitedToGroup"),
+        "ReceivedFriendRequest": isChecked("ReceivedFriendRequest"),
+        "AcceptedFriendRequest": isChecked("AcceptedFriendRequest"),
+        "UnreadDirectMessage": isChecked("UnreadDirectMessage"),
+        "UnreadGroupMessage": isChecked("UnreadGroupMessage"),
+        "UpcomingStudySession": isChecked("UpcomingStudySession")
+      },
+      refresh: {
+        "AutomaticUpdates": isChecked("AutomaticUpdates"),
+        "RefreshRate": document.getElementById("automaticUpdateFrequencySlider").value * 1
+      }
+    };
+
+    fetch(`/submitSettings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(settings)
+    }).then(response => response.json())
+      .then(response => {
+        if (response == 200) {
+          alert("Settings updated successfully.");
+          window.location.reload(false);
+        }
+      })
+      .catch(error => alert(`Request failed: Error: ${error}`));
+  }
+</script>
+
+{% endblock %}

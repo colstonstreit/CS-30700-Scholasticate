@@ -1,0 +1,70 @@
+{% extends "base.html" %} {% block title %} Course Information {% endblock %} {% block content %}
+
+<head>
+    <link rel="stylesheet" href="../../static/css/course.css">
+</head>
+<p id="courseInfo" style="display: none;">{{ courseInfo }}</p>
+<p id="students" style="display: none;">{{ students }}</p>
+<p id="groups" style="display: none;">{{ groups }}</p>
+<p id="pgroups" style="display: none;">{{ pgroups }}</p>
+
+<body id="body">
+
+    <div id="profile">
+
+        <!-- Course profile header-->
+        <div id="profileHeader">
+            <div id="PHiconBox">
+                <img src="../static/img/book.png" width="100%" height="100%"> </div>
+            <div id="PHcourseNameBox">
+                <span id="courseName" class="courseNameText"></span>
+            </div>
+            <div id="PHprofessorNameBox">
+                <span id="professor"></span>
+            </div>
+
+        </div>
+
+        <!-- Profile Body -->
+        <div id="profileBody">
+            <div id="PBstudentsHeader">
+                Students
+            </div>
+            <div id="PBstudentsBox">
+
+                <ul id="studentList"></ul>
+
+            </div>
+            <div id="PBGroupsHeader">
+                Groups
+            </div>
+            <div class="PBGroupsBox">
+                <ul id="groupList"></ul>
+
+            </div>
+
+        </div>
+
+    </div>
+</body>
+
+<!-- Course page script -->
+<script>
+    var courseInfo = JSON.parse(document.getElementById("courseInfo").innerText);
+    document.getElementById("courseName").innerHTML = courseInfo.course_name;
+    document.getElementById("courseName").innerHTML += " - ";
+    document.getElementById("courseName").innerHTML += courseInfo.course_title;
+    document.getElementById("professor").innerHTML = courseInfo.professor_name.replaceAll("\n", "<br>");
+
+    for (let student of JSON.parse(document.getElementById("students").innerText)) {
+        document.getElementById("studentList").innerHTML += `<li><a href="/profile/${student.student_id}">${student.name}</a></li>`;
+    }
+
+    for (let pgroup of JSON.parse(document.getElementById("pgroups").innerText)) {
+        document.getElementById("groupList").innerHTML += `<li> <a href="/group/${pgroup.study_group_id}">${pgroup.name} (Private)</a></li>`;
+    }
+    for (let group of JSON.parse(document.getElementById("groups").innerText)) {
+        document.getElementById("groupList").innerHTML += `<li><a href="/group/${group.study_group_id}">${group.name}</a></li>`;
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "base.html" %} {% block title %} Display Group {% endblock %} {% block content %}
+
+<head>
+    <link rel="stylesheet" href="../../static/css/displayGroup.css">
+    <link rel="stylesheet" href="../../static/css/palette.css">
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.css' rel='stylesheet' />
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+</head>
+
+<p id="group" style="display: none;">{{ group }}</p>
+<p id="members" style="display: none;">{{ members }}</p>
+<p id="invite" style="display: none;">{{ invite }}</p>
+<p id="owner" style="display: none;">{{ owner }}</p>
+
+<body id="body">
+
+    <div id="profile">
+
+        <!-- Group profile header-->
+        <div id="profileHeader">
+            <div id="PHiconBox">
+                <img src="../static/img/group.png" width="80px" height="80px"> </div>
+            <div id="PHgroupNameBox">
+                <span id="name" class="groupNameText"></span>
+            </div>
+            <div id="PHcourseBox">
+                <span class="courseText" id="course_name"></span>
+            </div>
+            <div id="PHdescriptionBox">
+                <textarea readonly class="PHdescriptionTextArea" id="description" name="description"></textarea>
+            </div>
+
+            <div class="PHownerBox" id="ownername">
+                <!-- Text set withing displayGroup.js -->
+                <div id="PHcrownBoxParent">
+                    <div id="PHcrownBox">
+                        <div class="gg-crown"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="PHbuttonsBox">
+                <!-- Buttons added within displayGroup.js -->
+            </div>
+        </div>
+
+        <!-- Profile Body -->
+        <div id="profileBody">
+            <div id="PBscheduleHeader">
+                Schedule
+            </div>
+            <div id="PBscheduleBox">
+                <textarea readonly id="schedule" name="schedule" class="fieldTextArea"></textarea>
+            </div>
+            <div id="PBmembersHeader">
+                <span id="numMembers"></span>
+            </div>
+            <div id="PBmembersBox">
+                <textarea readonly id="membersList" name="membersList" class="fieldTextArea"></textarea>
+            </div>
+            <div id="PBlocationHeader">
+                Meeting Location
+            </div>
+            <div class="PBlocationBox">
+                <div id="map">
+                    <input type="text" id="latitude" name="latitude" style="display: none;">
+                    <input type="text" id="longitude" name="longitude" style="display: none;">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+
+<script src="{{ url_for('static', filename='location.js') }}"></script>
+<script src="{{ url_for('static', filename='displayGroup.js') }}" onload="onLoad();"></script>
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.js'></script>
+
+{% endblock %}

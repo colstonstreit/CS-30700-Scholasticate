@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %} Search Results {% endblock %}
+{% block content %}
+
+	<ul id="students", style="display: none;"> {{ students }}</ul>
+	<ul id="groups", style="display: none;"> {{ groups }} </ul>
+	<ul id="courses", style="display: none;"> {{ courses }} </ul>
+	<ul id="query", style="display: none;"> {{ query }} </ul>
+
+	<div class="field">
+		<div>
+			<form action="/search" method="GET">
+				<input type="text" class="fieldBox" name="query" id="query" placeholder="Search Query" value="{{ query }}">
+				<input type="submit" value="Search">
+			</form>
+		</div>
+	</div>
+
+	<ul id="info"></ul>
+
+	<div id="studentListDiv" style="display: none;">
+		<p>Found students: </p>
+		<ul id="list_students"></ul>
+	</div>
+
+	<div id="groupListDiv" style="display: none;">
+		<p>Found study groups: </p>
+		<ul id="list_groups"></ul>
+	</div>
+
+	<div id="courseListDiv" style="display: none;">
+		<p>Found courses: </p>
+		<ul id="list_courses"></ul>
+	</div>
+
+	
+	<script>
+
+		const q = document.getElementById("q")
+		var has = false
+
+		for (let student of JSON.parse(document.getElementById("students").innerText)) {
+			document.getElementById("list_students").innerHTML += `<li><a href="/profile/${student.student_id}">${student.name}</a></li>`;
+			document.getElementById("studentListDiv").style.display = "block";
+			has = true;
+		}
+
+		for (let group of JSON.parse(document.getElementById("groups").innerText)) {
+			document.getElementById("list_groups").innerHTML += `<li><a href="/group/${group.study_group_id}">${group.name}</a></li>`;
+			document.getElementById("groupListDiv").style.display = "block";
+			has = true;
+		}
+
+		for (let course of JSON.parse(document.getElementById("courses").innerText)) {
+			document.getElementById("list_courses").innerHTML += `<li><a href="/course/${course.course_id}">${course.course_name} - ${course.course_title}</a></li>`;
+			document.getElementById("courseListDiv").style.display = "block";
+			has = true;
+		}
+
+		if (has == false) {
+			document.getElementById("info").innerHTML = "No results found!"
+		}
+	</script>
+
+
+{% endblock %}

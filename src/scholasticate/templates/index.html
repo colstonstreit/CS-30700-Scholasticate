@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %} Index {% endblock %}
+{% block content %}
+		<p id="studentInfo" style="display: none;">{{ studentInfo }}</p>
+		<p id="friends" style="display:none;">{{ friends }}</p>
+		<p id="friendRequests" style="display: none;">{{ friendRequests }}</p>
+
+		<!-- React root container for now -->
+		<div id="reactRoot"></div>
+
+		<p>Take a look at the map!</p>
+		<div id='map' style='width: 800px; height: 600px;'></div><br>
+		<button onclick="MapManager.zoomToYou();">Zoom to You!</button>
+		<button onclick="refreshLocations();">Manually Update Location</button>
+		<p>Latitude, Longitude: <span id="yourLocation"></span></p>
+		<p id="lastUpdated"></p>
+		<p><span id="status"></span></p>
+
+		<!-- Load React. -->
+		<!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+		<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+		<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+
+		<!-- Allows for use of JSX -->
+		<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+		<!-- type="text/babel" to support JSX -->
+		<script defer src="{{ url_for('static', filename='script.js') }}" type="text/babel"></script>
+
+		<div id="userList" style="display: none;">
+			<style>
+				td, th { border: 1px solid black; padding: 5px; text-align: center;}
+			</style>
+			<table id="userListTable" style="border: 1px solid black;margin: 10px;"></table>
+
+			<div id="filterContainer">
+				<form id="filterForm">
+					<label for="query">Filter by Name:</label>
+					<input type="text" id="query" name="query"><br>
+					<label for="distanceQuery">Filter by Distance:</label>
+					<select id="distanceQuery" name="distanceQuery">
+						<option value="0.1">0.1km</option>
+						<option value="0.5">0.5km</option>
+						<option value="1">1km</option>
+						<option value="10">10km</option>
+						<option selected value="Anywhere">Anywhere</option>
+					</select><br>
+					<button type="button" onclick="refreshLocations(); return false;">Apply Filters</button>
+				</form>
+			</div>
+		</div>
+
+		<script src="{{ url_for('static', filename='location.js') }}"></script>
+		<script src="{{ url_for('static', filename='filterUsers.js') }}"></script>
+		<script src="{{ url_for('static', filename='friendUtil.js') }}"></script>
+		<script>refreshLocations()</script>
+
+		<script>
+			let studentInfoText = document.getElementById("studentInfo").innerText;
+			if (studentInfoText != "None") {
+				let studentInfo = JSON.parse(studentInfoText);
+
+				if (UserInfo.settings != undefined)
+					refreshInterval = setInterval(refreshLocations, UserInfo.settings.refresh.RefreshRate * 1000);
+
+				if (studentInfo.student.invisible == true) {
+					document.getElementById("status").innerHTML += "Invisible"
+					document.getElementById("status").innerHTML += `<br><form method="POST" action="{{ url_for('toggleInvisible') }}"><input type="submit" id="share" value="Go Online"></form>`
+				} else if (studentInfo.student.sharing == true) {
+					document.getElementById("status").innerHTML += "Active"
+					document.getElementById("status").innerHTML += `<br><form method="POST" action="{{ url_for('toggleSharing') }}"><input type="submit" id="share" value="Stop Sharing"></form>`
+				} else {
+					document.getElementById("status").innerHTML += "Online"
+					document.getElementById("status").innerHTML += `<br><form method="POST" action="{{ url_for('toggleSharing') }}"><input type="submit" id="share" value="Start Sharing"></form>`
+
+				}
+			}
+		</script>
+
+{% endblock %}

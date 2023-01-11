@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %} Invite Student {% endblock %}
+{% block content %}
+<h1>Send an invitation:</h1>
+<p id="groups" style="display: none;">{{ groups }}</p>
+<form method="POST" action="invite">
+  <label for="group">Group: </label>
+  <select id="group_id" name="group_id">
+  </select><br><br>
+  <input type="submit" id="submit" value="Send">
+</form>
+<script>
+  var groups = JSON.parse(document.getElementById("groups").innerText);
+
+  for (groupJSON of groups) {
+    var group = JSON.parse(groupJSON);
+    document.getElementById("group_id").innerHTML += `<option selected value = "${group.study_group_id}">${group.name}</option>`
+  }
+</script>
+{% endblock %}

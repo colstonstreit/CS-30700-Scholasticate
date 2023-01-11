@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %} View Users and Study Groups! {% endblock %}
+{% block content %}
+
+  <ul id="publicStudyGroups", style="display: none;"> {{ publicStudyGroups }}</ul>
+  <ul id="onlineProfiles", style="display: none;"> {{ onlineStudents }} </ul>
+
+  <div id="onlineProfilesDiv">
+    <h2>Online Profiles</h2>
+		<ul id="onlineProfilesList"></ul>
+  </div>
+  <div id="friendSuggestionsDiv">
+    <h2>Friend Suggestions</h2>
+    <ul id="suggestionList"></ul>
+  </div>
+  <div id="publicGroupsDiv">
+    <h2>Public Groups</h2>
+		<ul id="publicStudyGroupList"></ul>
+  </div>
+  <script>
+    var profilesJSON = JSON.parse(document.getElementById("onlineProfiles").innerText);
+    let numProfiles = 0;
+    for (profileJSON of profilesJSON) {
+      var profile = JSON.parse(profileJSON);
+      var profileList = document.getElementById("onlineProfilesList");
+      if (UserInfo.id != profile.student_id) {
+        profileList.innerHTML += `<li>
+          ${profile.name} <form action="/profile/${profile.student_id}"><input type="submit" value="Visit Student!" /></form>
+        </li>`;
+        numProfiles++;
+      }
+    }
+    if (numProfiles == 0) {
+      document.getElementById("onlineProfilesDiv").innerHTML += "<p>You are the only one online!";
+    }
+
+    var groupsJSON = JSON.parse(document.getElementById("publicStudyGroups").innerText);
+    let numGroups = 0;
+    for (groupJSON of groupsJSON) {
+      var studyGroup = JSON.parse(groupJSON);
+      var studyGroupList = document.getElementById("publicStudyGroupList");
+      studyGroupList.innerHTML += `<li>
+        ${studyGroup.name}: ${studyGroup.description} <form action="/group/${studyGroup.study_group_id}"><input type="submit" value="Visit Group!" /></form>
+      </li>`;
+      numGroups++;
+    }
+    if (numGroups == 0) {
+      document.getElementById("publicGroupsDiv").innerHTML += "There are no public study groups right now.";
+    }
+  </script>
+  <script src="{{ url_for('static', filename='filterUsers.js') }}"></script>
+  <script src="{{ url_for('static', filename='compatability.js') }}" onload="computeCompatabilityScores();"></script>
+{% endblock %}

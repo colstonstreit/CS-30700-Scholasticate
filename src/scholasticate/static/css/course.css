@@ -1,0 +1,136 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #000000;
+    letter-spacing: 0.1;
+}
+
+#body {
+    background: #b4ddf0;
+}
+
+#profile,
+#profileHeader,
+#profileBody {
+    position: relative;
+}
+
+#profile {
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    min-height: 800px;
+    min-width: 1600px;
+}
+
+#profileHeader {
+    height: 20%;
+}
+
+#profileBody {
+    height: 75%;
+}
+
+
+/* #region Text */
+
+.courseNameText {
+    font-size: 40px;
+}
+
+#professor {
+    color: #575757;
+    font-size: 20px;
+}
+
+
+/* #endregion */
+
+
+/* #region Profile body elements */
+
+#PBstudentsBox,
+.PBGroupsBox {
+    position: absolute;
+    top: 5%;
+    width: 50%;
+    height: 95%;
+    border: 1px solid black;
+    background-color: #a4d2da;
+}
+
+#PBstudentsBox {}
+
+.PBGroupsBox {
+    left: 50%;
+}
+
+#PBstudentsHeader,
+#numMembers,
+#PBGroupsHeader {
+    font-size: 30px;
+    text-align: center;
+}
+
+#PBstudentsHeader,
+#PBGroupsHeader {
+    background-color: #b8bcff;
+    position: absolute;
+    border: 1px solid black;
+    text-align: center;
+}
+
+#PBstudentsHeader,
+#PBGroupsHeader {
+    width: 50%;
+    height: 5%;
+}
+
+#PBstudentsHeader {}
+
+#PBGroupsHeader {
+    left: 50%;
+}
+
+#studentList,
+#groupList {
+    list-style-type: none;
+    text-decoration: none;
+}
+
+
+/* #endregion */
+
+
+/* #region Profile header elements */
+
+#PHiconBox,
+#PHcourseNameBox,
+#PHprofessorNameBox {
+    position: absolute;
+    vertical-align: center;
+    text-align: left;
+}
+
+#PHiconBox {
+    top: 30%;
+    left: 28%;
+    height: 40%;
+    width: 5%;
+}
+
+#PHcourseNameBox {
+    top: 35%;
+    left: 35%;
+    height: 20%;
+    width: 65%;
+}
+
+#PHprofessorNameBox {
+    top: 60%;
+    left: 35%;
+    height: 20%;
+    width: 65%;
+}
+
+
+/* #endregion */

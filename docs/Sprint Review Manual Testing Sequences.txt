@@ -1,0 +1,469 @@
+﻿SPRINT 1
+User Story #1
+Manually testing registering, logging in, and changing password.
+Sequence:
+* Register a user with the following specifications:
+   * Name: Jay Gephart
+   * Email: jgephart@purdue.edu
+   * School: Purdue University (default)
+   * Password: B01lerUp!!
+* Once redirected to the login page, perform the following authentication tests.
+   * Test #1 Specifications:
+      * Email: johndoe@purdue.edu
+      * Password: helloworld
+      * RESULT: Warn the user no account exists with this email.
+   * Test #2 Specifications:
+      * Email: jgephart@purdue.edu
+      * Password: helloworld
+      * RESULT: Warn the user the password is incorrect.
+   * Test #3 Specifications:
+      * Email: jgephart@purdue.edu
+      * Password: B01lerUp!!
+      * RESULT: Redirect the Jay Gephart’s profile, show Jay Gephart is logged in on the home page.
+* Log the user out, and return to the log-in page.
+* Click “Forgot Password?”, visit the password retrieval page, and perform the following tests:
+   * Test #4 Specifications:
+      * Email: johndoe@purdue.edu
+      * RESULT: Redirect to login page, warn the user no account exists with this email.
+   * Test #5 Specifications:
+      * Email: jgephart@purdue.edu
+      * RESULT: Redirect to change password page.
+* Change password to “H@mm3rDown”, redirect to log-in page, perform the following tests:
+   * Test #6 Specifications:
+      * Email: jgephart@purdue.edu
+      * Password: B01lerUp!!
+      * RESULT: Warn the user the password is incorrect.
+   * Test #7 Specifications:
+      * Email: jgephart@purdue.edu
+      * Password: H@mm3rDown
+      * RESULT: Redirect the Jay Gephart’s profile, show Jay Gephart is logged in on the home page.
+
+
+User Story #6
+Manually testing filtering algorithm.
+Sequence:
+* Once “Jay Gephart” is created, visit the home page under “Jackson Rosenberg” and perform the following tests:
+   * Filter By Name (“Anywhere” in Distance Field):
+      * “Jay”: print Jay Gephart and distance
+      * “Gephart”: print Jay Gephart and distance
+      * “Jay Gephart”: print Jay Gephart and distance
+      * “Gep”: print Jay Gephart and distance
+      * “Jason”: print Name Distance (km)
+      * “JayGephart”: print Name Distance (km)
+      * “Gephart”: print Name Distance (km)
+   * Filter by Distance (nothing in Name Field):
+      * Because of the inconsistencies with location, the distance will be calculated and tested with the drop down box.  If the calculated distance is less than the distance parameter, print Jay Gephart and distance, else print Name Distance (km)
+   * Filter by Distance (“Gephart” in Name Field):
+      * Because of the inconsistencies with location, the distance will be calculated and tested with the drop down box.  If the calculated distance is less than the distance parameter, print Jay Gephart and distance, else print Name Distance (km)
+   * Filter by Distance (“Gephart” in Name Field):
+      * For all distance parameters, print Name Distance (km)
+________________
+
+
+SPRINT 2
+User Story #1
+Manually test the go invisible feature.
+Sequence:
+* Register a new user A.
+* Log into user A and go to the profile page.
+   * The profile page should say “Online”, with a button to “Go Invisible”.
+   * The “Who’s Online?” page should include user A.
+* Go to the profile page, and press “Go Invisible”.
+   * The profile page should now say “Invisible”, with a button to “Go Online”.
+   * The “Who’s Online?” page should not include user A.
+* Log out of the account and go to user A’s profile page.
+   * The profile page should say “Offline”, with no button to go online.
+
+
+User Story #1
+Manually test the location sharing feature.
+Sequence:
+* Register and log in as user A, and go to the index page.
+   * The index page should say “Online” with a button to “Start Sharing”.
+* In a different tab, log in as user B to view user A’s status.
+   * User A should not be on the map page.
+   * User A should be on the “Who’s Online?” page.
+* Click the “Start Sharing” button.
+   * The index page should say “Active” with a button to “Stop Sharing”.
+   * User B should be able to see user A on the map page.
+* Press the “Go Invisible” button in the profile, then go to the index page.
+   * The index page should say “Invisible” with a button to “Go Online”.
+   * User B should not be able to see user A on the map page.
+* Press the “Go Online” button.
+   * The profile page and index page should say “Online”, and not “Sharing”.
+   * User B should still not be able to see user A on the map page.
+
+
+User Story #1
+Manually test the account deactivation feature.
+Sequence:
+* Register as a new user. Note the profile ID in the profile page.
+* Create a study group.
+* Go to the Edit Profile page, and press “Deactivate Account”.
+   * The webpage should say “You cannot deactivate your account if you own a group!”
+* Disband the study group, and press “Deactivate Account”.
+   * The webpage should go back to the index page, and the user should not be logged in.
+* Attempt to access the same profile page.
+   * The website should say “That student does not exist!”.
+* Attempt to log in using the same email and password.
+   * The webpage should say “There is no account with this email address.”
+* Attempt to register with the same email.
+   * The registration process should be successful.
+   * The user ID should not be the same as the last ID.
+
+
+User Story #2
+Manually testing that a wardrobe can be edited and added to, if necessary.
+Sequence:
+* Login as a user with the following wardrobe specifications:
+   * Item #1: AAMB Hat, Black
+   * Item #2: AAMB Gold Day Shirt, Gold
+   * Item #3: Levi’s Jeans, Blue
+* Go to “Edit Profile”
+* Create a new item to add to the wardrobe:
+   * Article Name: Jacket
+   * Brand: AAMB
+   * Color: Red = 0, Green = 0, Blue = 0
+* Select the “Add Article To Wardrobe” button
+   * On click, the new clothing item should appear at the bottom of the list, without any commits to the database or submission of the profile.
+* Immediately after, select the “Remove” button for the new article
+   * On click, the new clothing item should be removed from the list.  This test serves to show that dynamic removals can occur on new items without submitting them first to the database
+* Repeat Steps #2 and #3, and select the “Submit Changes” button.
+   * On click, return to the profile page and the new clothing item should appear at the bottom of the list on the profile page in plain text form in black color.
+* Select “Edit Profile”, return to the editing page and select “Remove” on the ‘Gold Day Shirt’ item.
+   * On click, the new clothing item should be removed from the list. 
+* Finally, select the “Submit Changes” button.
+   * On click, return to the profile page and the removed clothing item should not appear in the list.
+
+
+________________
+
+
+User Story #2
+Manually testing time availability settings:
+Sequence:
+* Login as a user with no availability listed in the table of their profile, and go to “Edit Profile”.
+* Perform the following initial add to availability tests with faulty times:
+   * Test #1 Specifications:
+      * Day: Sunday
+      * Start Time: 10:00
+      * End Time: 09:00
+      * RESULT: Your times are invalid!
+   * Test #2 Specifications:
+      * Day: Sunday
+      * Start Time: 10:00
+      * End Time: 25:00
+      * RESULT: Your times are invalid!
+* Add a proper availability to the table:
+   * Test #3 Specifications:
+      * Day: Sunday
+      * Start Time: 10:00
+      * End Time: 11:00
+      * RESULT: Time appears properly within the table.
+* Immediately select “Remove” on the new time.
+   * This test serves to show that dynamic removals can occur on new items without submitting them first to the database
+* Repeat Step #3, and select the “Submit Changes” button.
+   * On click, return to the profile page and the new availability should be present within the table
+* Select “Edit Profile”, return to the editing page and perform the following add to availability tests with merging times:
+   * Test #4 Specifications:
+      * Day: Sunday
+      * Start Time: 09:00
+      * End Time: 10:30
+      * RESULT: Time appears as 09:00-11:00 within the table
+   * Test #5 Specifications:
+      * Day: Sunday
+      * Start Time: 10:30
+      * End Time: 12:00
+      * RESULT: Time appears as 09:00-12:00 within the table
+   * Test #6 Specifications:
+      * Day: Sunday
+      * Start Time: 08:00
+      * End Time: 13:00
+      * RESULT: Time appears as 08:00-13:00 within the table
+* Select the “Submit Changes” button.  Return to the editing page and remove it.  Add the following time to the availability table:
+   * Day: Monday
+   * Start Time: 07:00
+   * End Time: 09:00
+      * As a result of the following steps, we should view the original Sunday time on the table, and upon submitting changes, we should view only the Monday on the table.
+* Visit the profile of a user who owns a study group that has the following schedule: “Monday 07:00-09:00”.  Visit the group profile and select “Join Group”
+   * On click, return to the group page.  Upon routing to profile, view that the table shows no availability, as the joining of the group made the user unavailable during that meeting time.
+
+
+
+
+________________
+
+
+User Story #2
+Manually testing course removal and course history settings:
+Sequence:
+* Login as a user with no classes listed in the table on their profile, and go to “Edit Profile”.
+* Select “CS307 - Software Engineering I” from the dropdown in the “Courses” section.
+   * On selection, view the course added to the selected courses table.  Upon viewing the dropdown, the course should not be present in the list.
+* Select the “Submit Changes” button.
+   * On click, the course should appear in the “Courses” bulleted list on the profile
+* Go to “Edit Profile”.  Select to remove the course from the “Selected Courses” table.
+   * On click, the course should be removed from the selected courses table and simultaneously be added to the “Course History” table. Upon viewing the dropdown, the course should not be present in the list.
+* Select the “Submit Changes” button.
+   * On click, the course should appear in the “Course History” bulleted list on the profile
+* Go to “Edit Profile”.  Select to remove the course from the “Course History” table.
+   * On click, the course should be removed from the course history table. Upon viewing the dropdown, the course should now be present in the list.
+* Select the “Submit Changes” button.
+   * On click, the user should have no courses and an empty course history
+________________
+
+
+User Story #3
+Manually testing that direct messages can be initiated from various parts of the application.
+Sequence:
+* Register a user with the following specifications, then log in as them:
+   * Name: Bob
+   * Email: bob@gmail.com
+   * School: Purdue University (default)
+   * Password: Purdue1234!!!
+* Log out then register another user with the following specifications:
+   * Name: Steve
+   * Email: steve@gmail.com
+   * School: Purdue University (default)
+   * Password: Purdue1234!!!
+* Logged in as Steve, navigate to the main page (under “Scholasticate’)
+* Press the button “Manually Update Location” to update user locations
+* Perform the following direct message initiation test.
+   * Click on the marker belonging to Bob (should be blue)
+   * A popup window including some basic profile information should pop up. It should also include a button saying “Send Message.”
+   * When you click the button, you should be brought to a page where you can send Bob a message.
+   * Send him, “Hello!”
+* Now, go back to the map under the ‘Scholasticate’ page and perform this test
+   * Click on Bob’s marker again, then this time click his name to be taken to his profile page.
+   * There should be a “Send Message” button here as well. Click the button.
+   * You should be taken to the same page as before where you can send Bob a message. Your “Hello!” from before should still be present.
+________________
+
+
+User Story #4
+Manually testing that study groups are displayed correctly on the map and can be easily distinguished from users in both the map and the list. 
+Sequence:
+* Log in as Steve, the user created in the previous manual test.
+   * Email: steve@gmail.com
+   * Password: Purdue1234!!!
+* Now, perform the following group test:
+   * Click the “Create Group” link on the sidebar
+   * Create a new group
+      * Group Name: Steve’s Group
+      * Course: Software Engineering
+      * Schedule: Always
+      * Description: Lots of coding and documents
+      * Privacy: Public
+      * Location: On the map, click on any location, and remember where it was. A marker should pop up where you clicked.
+   * After submission, you should be redirected to the view group page. Click on Scholasticate in the sidebar.
+   * On the map, you should now see a marker with a book icon hovering over the same location where you clicked on the map before.
+   * Click the marker, and you should see a brief summary of the group in a popup window.
+   * In the list, you should see that “Steve’s Group” is inside the list and has type “Group” rather than “Student” like Bob.
+
+
+________________
+
+
+User Story #5
+Manually testing that individuals who are not the owner of a group cannot access the edit group page and do things they shouldn’t be able to do. Also checking that the group member cap is functional.
+Sequence:
+* Login as any user and click the “Create Group” link in the sidebar.
+* Create a new group with the following specifications:
+   * Group Name: Review Group
+   * Course: Software Engineering
+   * Schedule: Always
+   * Max Members: 2
+   * Description: Currently coding
+   * Privacy: Public
+   * Location: Anywhere on the map is fine!
+* Click the “Apply changes” button when you are redirected to the edit page to be taken back to the profile page.
+* Perform the following tests:
+   * Non-Owner Access
+      * Logout, then login as a different user. Go to the “Who’s Online?” tab. You should see the “Review Group” made previously. Click on the “Visit Group!” button.
+      * You should be taken to the group’s profile page. You should not have an “Edit Group” button appear for you since you are not the owner.
+      * Press the “Join Group” button to join the group. Upon refresh, you still should not see the “Edit Group” button since editing the group is restricted to the owner.
+      * Finally, manually add “/edit” to the end of the url in an attempt to force your way into the edit page. You should be redirected back to the group profile page with a message saying “You don’t own this group!”
+   * Group Member Cap
+      * After performing the “Non-Owner Access” test above, logout, then login as a third different user. Go to the “Who’s Online?” tab. You should see the “Review Group” made previously. Click on the “Visit Group!” button.
+      * You should be taken to the group’s profile page. There, you should see that the max number of members is 2, and there are currently 2 members in the group.
+      * Click the “Join Group” button. You should be redirected back to the group profile page with the message “You cannot join this group. Too many members!” This is because you are the 3rd member to join a group capped at 2 members.
+   * Owner Edit Access
+      * After the above tests, logout and log back into the account used to create the “Review Group” from above.
+      * Click the “Profile” tab - you should be brought to your profile.
+      * There, you should see the “Review Group” that you made displayed. Click on the link to go to its profile page.
+      * Since you are the owner, you should see an “Edit Group” button unlike non-owners. Click on it. You should be taken to the edit group page.
+   * Removing Members as the Owner
+      * After the “Owner Edit Access” test above, you should still be inside the edit group profile page logged in as the owner.
+      * Click the “Remove Member” button.
+      * You should be taken to a page with a dropdown box of the current members in the group (besides yourself). In this case, there should only be one user in the box: the user who joined in the previous tests. Select them, and press the “Submit Removal” button.
+      * You should be taken back to the group’s profile page and given a success message. You should now see that the user you removed is no longer in the group, and the number of members has decremented.
+
+
+User Story #5
+Manually test group ownership transferral and disbanding.
+Sequence:
+* Create a public study group as user A.
+* As user B, join the study group.
+   * User A should show up as the owner.
+* As user A, transfer the ownership of the group to user B.
+   * User A should no longer be able to see the “Edit Group” button and page.
+   * User B should show up as the owner.
+* As user B, disband the group in the “Edit Group” option.
+   * The group should no longer show up in either user’s profiles.
+   * Accessing the group page should say “Not a valid group!”.
+________________
+
+
+Developer Story #1
+Manually testing user permissions for different routings.
+Sequence:
+* Create two users.  One of the users will be the owner of both a private group and a public group.  The other user will be a member of no groups.
+* Log-in the non-owner user.  Manually type in the URL for the private group’s profile page in an attempt to force your way into viewing the private group.
+   * On submission, return to the home page with the following error message: “This group is private, you cannot view it. Try logging into a different account.”
+* Manually type in the URL for the public group’s profile page and join it.  Manually add “/edit” in the URL in an attempt to force your way into editing the group although not being the owner.
+   * On submission, return to the group profile with the following error message: “You don’t own this group!”
+* Manually type in the URL for editing the owner’s profile in an attempt to force your way into accessing their information.
+   * On submission, return to the login page.
+
+
+________________
+
+
+SPRINT 3
+User Story #2
+Manually testing that each type of notifications work correctly, as well as can be toggled on or off on the settings page.
+Sequence:
+* Open Scholasticate in two windows, one in incognito mode so you can be logged into two different accounts at once.
+* Register a new user in each window: we’ll call them Steve and Bob. Log in to each of them in their respective windows.
+* Click the ‘Settings’ page from the sidebar. All types of notifications should have their checkboxes checked by default, meaning you should receive them from the get-go.
+* On the account logged in as Steve, create a new group using the sidebar, making sure to mark it as private. The other details don’t matter, though you will have to select a course. This will be used in future tests.
+* Performs the following tests in this order to ensure each type of notification is working.
+   * Testing that notifications are received when you are invited to a group.
+      * Logged in as Steve, go to “Who’s Online?” tab and navigate to Bob’s profile. Click the “Invite to Group” button, then follow the UI instructions to invite him to the private group you made.
+      * On the window logged in as Bob, you should see an indicator (like (1)) next to the “Notifications” tab within a few seconds, indicating you received a notification. Click on the ‘Notifications’ tab, and you should be shown a message telling you that you were invited to a group Steve owns with options to accept or reject the invitation.
+   * Testing that notifications are received when a member joins a group you’re in
+      * Continuing from the previous test, have Bob accept the group invitation that he received on his notifications page.
+      * Now, on the window logged in as Steve, you should see an indicator next to the “Notifications” tab within a few seconds, indicating that you have received a notification. Click on the “Notifications” tab, and you should be shown a message telling you that Bob has joined your group with the option to delete the notification.
+   * Testing that notifications are received when you have an unread group message
+      * Continuing from the previous test, as Steve, click the “Messages” tab and click the corresponding link to start a message within the study group you created. Send any non-empty message.
+      * Since Bob is in the group, on his window, you should see the notifications page (and/or the counter in the sidebar) dynamically update with a new notification notifying you that there is an unread group message in the group Steve made.
+      * As Bob, click the “X unread message(s)” link to be taken to the messaging interface for Steve’s group. Now, go back to the notifications page. You should see that the notification has disappeared, as you have read the message and thus no longer have any unread messages within Steve’s group chat.
+   * Testing that notifications are received when a member leaves a group you’re in
+      * Continuing from the previous test, have Bob navigate to the group profile if he is not already there by first going to Bob’s profile then clicking the link to the group listed on his profile.
+      * As Bob, click the “leave group” button. You should no longer be in the group and be taken away since you no longer have access to the private group.
+      * Now, on the window logged in as Steve, you should see the number next to the “Notifications” tab increment, indicating you received another notification. Since Steve was already on the notifications page, you should see it dynamically update after a few seconds, with it now showing a message telling you that Bob left your group with the option to delete the notification.
+   * Testing that notifications are received when you receive a friend request
+      * Now, have Bob navigate to Steve’s profile by going to the “Who’s Online?” tab and clicking the “Visit” button under Steve.
+      * Click the “Add Friend” button on Steve’s profile.
+      * On the window logged in as Steve, the notifications page should again dynamically update (with the counter in the sidebar incrementing again) with a new notification, this time with a message telling you that Bob has sent you a friend request as well as options to either accept or reject the friend request.
+   * Testing that notifications are received when someone accepts your friend request
+      * Continuing from the previous test, have Steve accept Bob’s friend request from the notifications page.
+      * Now, the counter next to the “Notifications” tab on Bob’s window should be incremented, indicating he has received a new notification. Click the link to be taken to the notifications page, and you should be shown another message indicating that Steve has accepted your friend request with the option to delete the notification.
+      * Click the “delete” button, and you should see the notification disappear and the counter in the sidebar decrement. These delete buttons work the same across all tests.
+   * Testing that notifications are received when you have an unread direct message
+      * Now, as Steve, click the “Messages” tab and click the link to start a direct message chain with Bob. Send him any non-empty message.
+      * As Bob, you should see the notifications page dynamically update with another new notification, this time notifying you that you have an unread direct message from Steve. It should also display the message.
+      * Click the “X unread message(s)” link to be taken to the messaging interface with Steve. Now, go back to the notifications page. You should see that the notification has disappeared, as you have read the message and thus no longer have any unread messages from Steve.
+   * Testing that notifications are received when you have an upcoming study session
+      * Now, as Steve, navigate to your profile using the sidebar and click the link to the group you created that is displayed in your profile. Click “Edit Group” once you are there.
+      * Look at the clock and add 15 minutes. Also figure out what day it is. Then, in the “Schedule” field on the edit group page, write a letter indicating the current day (M - Monday, T - Tuesday, W - Wednesday, R - Thursday, F - Friday, S - Saturday, U - Sunday) followed by a space. Then write the time in fifteen minutes in the form HH:SS using 24-hour time. Then put a ‘-’, and finally write an ending time in the form of HH:SS.
+         * For example, if it is 1:09pm on Thursday, you should type “R 13:24-15:00,” indicating your group meets from 1:24pm to 3:00pm on Thursdays.
+         * If you are performing the test within 15 minutes before midnight, instead put the capital letter indicating the NEXT day with the time beginning with 0 to indicate the 0th hour of the next day. This should still work.
+         * You can also input multiple days (though it is not necessary for this test) by adding more day abbreviations: for example, “MWF 18:00-20:00” would indicate meeting from 6:00pm to 8:00pm on Mondays, Wednesdays, and Fridays.
+      * Submit your changes.
+      * You should now see the counter on the notifications sidebar increment, indicating you have received a notification. Navigate to the notifications page, and you should see a message notifying you that your meeting with Steve’s study group starts in 15 minutes. It will only display the option to delete the notification after the group meeting starts.
+* Now, click the ‘Settings’ page from the sidebar. Uncheck every box listed under notification preferences and submit your changes so that you will no longer receive notifications.
+* Repeat all of the above tests to ensure you no longer receive notifications of each type.
+________________
+User Story #4
+Manually testing the friend suggestion algorithm.  
+Sequence:
+   * First, enroll an account [which you own] in the courses of CS30700 and CS38100. These courses will serve as the compatibility for other users to be created.
+   * Second, create four additional users with the following specifications:
+   * Name: John Lennon
+   * Courses Enrolled: CS30700 and CS38100
+   * Course History: None
+   * Name: Paul McCartney
+   * Courses Enrolled: CS30700
+   * Course History: CS38100
+   * Name: George Harrison
+   * Courses Enrolled: None
+   * Course History: CS30700 and CS38100
+   * Name: Ringo Star
+   * Courses Enrolled: CS25200
+   * Course History: CS18000
+   * Due to the friend suggestion algorithm, the three users that should appear are John Lennon, Paul McCartney and George Harrison, in that order descending.
+   * All of the users should also appear on the list of “online” students to verify that the friend suggestions are capped as 3 other users.
+
+
+________________
+
+
+User Story #5
+Manually testing that screening new messages from non-friends and deleting old messages work properly, as well as that read receipts are properly displayed.
+Sequence:
+   * Open Scholasticate in two windows, one in incognito mode so you can be logged into two different accounts at once.
+   * Register a new user in each window: we’ll call them Steve and Bob. Log in to each of them in their respective windows.
+   * On the account logged in as Steve, navigate to the Messages tab and open up the messages with Bob.
+   * On the account logged in as Bob, navigate to the Notifications tab.
+   * Perform the following tests:
+   * Test that screening messages works.
+   * On the account logged in as Steve, send Bob any message.
+   * Now, on the account logged in as Bob, Bob should receive a notification on the screen saying that a new conversation with a non-accepted non-friend has been initiated. The message that was sent should be shown, and there should be buttons to accept and reject the new message chain from Steve.
+   * Press the accept button. This notification should be deleted, and the user should be taken to the messaging interface with Steve. Additional messages from Steve should not result in this accept-or-reject interface anymore since Steve has now been accepted by Bob.
+   * Repeat this test with a new account and press the reject button instead. The notification should be deleted, and subsequent messages from Bob will result in the same accept-or-reject interface.
+   * Test that deleting messages works.
+   * On the account logged in as Bob, go to the messaging interface with Steve.
+   * On the account logged in as Steve, send Bob any message.
+   * The message should pop up on Bob’s screen. Now, on Steve’s screen, press the delete button next to the message. 
+   * On both users’ screens, the message should turn red (within a few seconds) to denote that it was deleted, and the message contents should change to “[deleted]”.
+   * Test that read receipts are displayed for direct messages.
+   * Make sure Bob is not on the messaging page with Steve.
+   * On the account logged in as Steve, send Bob any message. You should not see a read receipt anywhere since Bob hasn’t seen the message yet.
+   * On Bob’s screen, open up the messaging window with Steve.
+   * Since Bob has now seen the message, on Steve’s screen, a simple “Read” message should be displayed under Steve’s latest message indicating that Bob has seen the message.
+   * Test that read receipts are displayed for group messages.
+   * Create a new public group under Steve’s account, specifying that at least 3 members should be able to join.
+   * Have Bob join the group using the “Who’s online?” interface.
+   * Create a new user (John) and have him join Steve’s group as well using the “Who’s Online?” interface.
+   * Now, have Bob send a message in the group chat using the messaging interface. Initially, since nobody has seen it, there should be no read receipt shown.
+   * Have Steve open the group chat using the messaging interface. Now that Steve has seen it, there should be a message underneath the message saying “Read by 1”, indicating that one person has read it. If Bob hovers over the “Read by 1” message, a pop-up should appear with Steve’s name in it since Steve has seen it.
+   * Now have John open the group chat using the messaging interface. Now that John has seen the message, the read receipt should be updated to say “Read by all” since all members of the group have seen it. If Bob hovers over the “Read by all” message, a pop-up should appear with both Steve’s and John’s names in it since both have seen the message.
+
+
+
+
+________________
+
+
+User Story #6
+Manually testing uploading invalid photos as a profile picture and manually testing the administrative account’s ability to forcibly remove an “inappropriate” profile picture from another profile.
+Sequence:
+   * Login as a user with no profile picture on their profile, and go to “Edit Profile”.
+   * Since the user has not specified a photo, the default profile picture should be present, which is a standard black icon.
+   * Upload a valid photo of dimension and size.  Before saving the profile information, choose another valid photo instead.  This will demonstrate the ability to edit the profile without committing all changes to the database.
+   * After this, click on “Submit Changes”.  See that the uploaded photo is now present on the user’s profile.
+   * Now, test a series of invalid photos.
+   * One photo too large in size (pixels)
+   * One photo too small in size (pixels)
+   * One photo with an invalid aspect ratio.
+   * All photos should not appear on the profile when attempting to select “Submit Changes”
+   * Now, upload an inappropriate photo [IU logo]
+   * Login into the administrative account and route to editing the original profile.  Demonstrate the ability to bypass the security requirement unlike other accounts.
+   * Change the photo back to something different and exit the account.
+
+
+
+
+Developer Story #3
+Manually testing the security question check for changing a user’s password.
+Sequence:
+   * Begin on the settings page for a user who has not set up the recovering password suite.
+   * Click on “Set Security Question”.
+   * Fill out the form on the redirected page with the following specifications:
+   * Security Question: What is the street you grew up on?
+   * Security Answer: Sesame
+   * Now, the password recovery option is set.  Logout of the current account.
+   * Return to the login page and select “Forgot Password?”.  Then enter the email associated with the account
+   * Enter “Oak” as the answer to the security question.  The user should be redirected back to the login page with a warning saying “Incorrect security question answer”
+   * Re-navigate and enter “Sesame” as the answer to the security question and move to the change password page on the correct answer.

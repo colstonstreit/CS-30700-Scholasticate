@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block title %} Remove Members {% endblock %} {% block content %}
+<p id="group" style="display: none;">{{ group }}</p>
+<p id="members" style="display: none;">{{ members }}</p>
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="../../static/css/groupMemberRemoval.css">
+<link rel="stylesheet" href="../../static/css/palette.css">
+
+<body id="body">
+    <div id="removeMemberBox">
+        <div id="RMTitleBox">
+            Member Removal
+        </div>
+        <form method="POST" action="removeMember">
+            <div id="RMDropdownBox">
+                <select id="groupMembers" name="groupMembers">
+          </select>
+            </div>
+            <div id="RMButtonBox">
+                <input type="submit" id="submit" class="RMbutton" value="Remove Selected Member">
+            </div>
+        </form>
+    </div>
+
+</body>
+
+<script src="{{ url_for('static', filename='groupMemberRemoval.js') }}" onload="onLoad();"></script>
+{% endblock %}

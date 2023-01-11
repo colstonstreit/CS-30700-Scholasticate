@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<a href="{{ url_for('index') }}" style="text-decoration: none" class="topLeftTitle">Hello!!</a>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Scholasticate - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/messaging.css') }}">
+    <!--<link rel="stylesheet" href="{{ url_for('static', filename='css/scholasticate.css') }}">-->
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap" rel="stylesheet">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.css' rel='stylesheet' />
+</head>
+
+<body>
+    <div id='HeaderAndBodyWrapper'>
+        {% block header %}
+        <div id='Header'>
+            <div class='HeaderItem'>
+                {% if 'userID' in session %}
+                <p id="userInfo" style="display: none;">{{ userInfo }}</p>
+                <script>
+                    var userID = "{{ session.get('userID') }}";
+                    window.sessionStorage.setItem('userID', userID);
+                    var UserInfo = JSON.parse(document.getElementById("userInfo").innerText);
+                    UserInfo.id = userID;
+                    console.log(UserInfo);
+                </script>
+                Welcome, {{ get_name_from_student_id(session['userID']) }}!<br>
+                <a href="{{ url_for('auth.logout') }}" onclick="window.sessionStorage.removeItem('userID');">Logout</a>
+                {% else %}
+                <script>
+                    var userID = null;
+                    window.sessionStorage.removeItem('userID');
+                    var UserInfo = {
+                        "id": userID
+                    };
+                    console.log(UserInfo);
+                </script>
+                <a href="{{ url_for('auth.login') }}">Login</a> {% endif %}
+            </div>
+            {% if 'userID' in session %}
+            <div class='HeaderItem'>
+                <a href="{{ url_for('profile', id=session['userID']) }}">Profile</a>
+            </div>
+            <div class='HeaderItem'>
+                <a href="{{ url_for('viewMessages') }}">Messages</a>
+            </div>
+            <div class='HeaderItem'>
+                <a href="{{ url_for('createGroup') }}">Create Group</a>
+            </div>
+            <div class='HeaderItem'>
+                <a href="{{ url_for('listEntities') }}">Who's Online?</a>
+            </div>
+            <div class='HeaderItem'>
+                <a id="notificationLink" href="{{ url_for('notifications') }}">Notifications</a>
+                <script>
+                    function countNotifications(notifications) {
+                        let count = 0;
+                        for (notification of notifications) {
+                            if (notification.type == "UnreadDirectMessage") {
+                                count += notification.json_data.messages.length;
+                            } else if (notification.type == "UnreadGroupMessage") {
+                                count += notification.json_data.messages.length;
+                            } else {
+                                count++;
+                            }
+                        }
+                        return count;
+                    }
+
+                    function refreshNotifications() {
+                        fetch(`/getNotifications`)
+                            .then(data => data.json())
+                            .then(notificationData => {
+                                //console.log(notificationData);
+                                UserInfo.notifications = notificationData.notifications;
+                                numNotifications = countNotifications(notificationData.notifications);
+                                if (numNotifications > 0) {
+                                    document.getElementById("notificationLink").innerText = `Notifications (${numNotifications})`;
+                                } else {
+                                    document.getElementById("notificationLink").innerText = `Notifications`;
+                                }
+                            })
+                            .catch(err => console.log(err));
+                        setTimeout(refreshNotifications, 5000);
+                    }
+                    refreshNotifications();
+                </script>
+            </div>
+            <div class='HeaderItem'>
+                <form action="/search" method="GET">
+                    <input type="text" class="fieldBox" name="query" id="query" placeholder="Search Query"
+                        value="{{ query }}">
+                    <input type="submit" value="Search">
+                </form>
+            </div>
+            <div class='HeaderItem'>
+                <a href="{{ url_for('settings', id=session['userID']) }}">Settings</a>
+            </div>
+            {% endif %}
+        </div>
+        {% endblock %}
+
+        <div id='Body'>
+
+            <div class="messages">
+                {% for message in get_flashed_messages() %}
+                <div class="flash">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+
+            {% block content %} {% endblock %}
+        </div>
+    </div>
+
+    {% block footer %}
+    <div id='Footer'>
+        <div id='FooterContent'>
+            <p>
+                CS307 Project by Daniel Karagory, Andrew Lanham, Jackson Rosenberg, Colston Streit, Devin Vering, and
+                Ethan Zhu
+            </p>
+            <p>
+                <a href='https://github.com/DanielBatteryStapler/Scholasticate'>Code is on Github</a>
+            </p>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+
+</html>

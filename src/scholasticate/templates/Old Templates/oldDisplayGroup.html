@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %} Study Group {% endblock %}
+{% block content %}
+  <p id="group" style="display: none;">{{ group }}</p>
+  <p id="members" style="display: none;">{{ members }}</p>
+  <p id="invite" style="display: none;">{{ invite }}</p>
+  <p id="owner" style="display: none;">{{ owner }}</p>
+  <div class="">
+    <span style="display: none;" class="createStudyGroupText">View a study group</span>
+    <div class="studyGroupOffset">
+
+      <div id="profile">
+        <h1>"<span id="name"></span>" Group Profile</h1>
+        <p>Description: <span id="description"></span></p>
+        <p>Owner: <span id="ownername"></span></p>
+        <p>Schedule: <span id="schedule"></span></p>
+        <p>Meeting location: <span id="latitude"></span>, <span id="longitude"></span></p>
+        <p>Number of members: <span id="numMembers"></span></p>
+        <p>Maximum members: <span id="maxMembers"></span></p>
+        <p>Group Members: <span id="membersList"></span><br></p>
+      </div>
+
+      <form style="display: none;">
+        <!-- Course field -->
+        <span class="fieldNameText courseName">Course name</span>
+        <input type="text" class="fieldBox courseBox" id="courseNameInput">
+
+        <!-- Study group name field -->
+        <span class="fieldNameText groupName">Study group name</span>
+        <input type="text" class="fieldBox groupBox" id="groupNameInput">
+
+        <!-- Schedule field -->
+        <span class="fieldNameText schedule">Schedule</span>
+        <input type="text" class="fieldBox scheduleBox" id="scheduleInput">
+
+        <!-- Description field -->
+        <span class="fieldNameText description">Description</span>
+        <input type="text" class="fieldBox descriptionBox" id="descriptionInput">
+
+        <!-- Privacy field -->
+        <span class="fieldNameText privacy">Privacy</span>
+        <input type="checkbox" class="fieldCheckBox" id="privacyCheck" name="privValue">
+        <span class="fieldNameText publicText">Public</span>
+
+      </form>
+
+      <div style="display: none;">
+        <!-- Proceed button -->
+        <a href=""><input type="button" class="proceedButton" value="Proceed"></a>
+        <!-- Cancel button -->
+        <a href=""><input type="button" class="cancelButton" value="Cancel"></a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    userID = window.sessionStorage.getItem('userID');
+
+    var group = JSON.parse(document.getElementById("group").innerText);
+    var membersJSON = JSON.parse(document.getElementById("members").innerText);
+    var members = [];
+    var invite = document.getElementById("invite").innerText;
+    hasInvite = false;
+    if (invite != "") {
+      hasInvite = true;
+      invite = JSON.parse(invite);
+    }
+    var owner = JSON.parse(document.getElementById("owner").innerText);
+
+    isMember = false;
+    for (memberJSON of membersJSON) {
+      member = JSON.parse(memberJSON);
+      members.push(member);
+
+      if (userID != null && member.student_id == userID) isMember = true;
+      div = document.getElementById("membersList");
+      div.innerHTML += member.name + ", "
+    }
+
+    isOwner = false;
+    if (owner.student_id == userID) isOwner = true;
+
+    document.getElementById("name").innerHTML = group.name;
+    document.getElementById("description").innerHTML = group.description;
+    document.getElementById("schedule").innerHTML = group.schedule;
+    document.getElementById("latitude").innerHTML = group.latitude;
+    document.getElementById("longitude").innerHTML = group.longitude;
+    document.getElementById("numMembers").innerHTML = members.length;
+    document.getElementById("maxMembers").innerHTML = group.max_members;
+    document.getElementById("ownername").innerHTML = owner.name;
+
+    if (!isMember && group.public == 1) {
+      div = document.getElementById("profile");
+      div.innerHTML += `<br><br><form action="` + group.study_group_id + `/join" method="POST"><input type="submit" name="join" value="Join Group"/></form>`;
+    } else if (!isMember && invite != null && invite != "") {
+      div.innerHTML += `<br><br><form action="` + group.study_group_id + `/acceptInvite" method="POST"><input type="submit" name="accept" value="Accept Invite"/></form>`;
+      div.innerHTML += `<form action="` + group.study_group_id + `/rejectInvite" method="POST"><input type="submit" name="reject" value="Reject Invite"/></form>`;
+    } else if (isOwner) {
+      div = document.getElementById("profile");
+      div.innerHTML += `<br><form action="` + group.study_group_id + `/edit" method="GET"><input type="submit" name="edit" value="Edit Group"/></form>`;
+    } else if (isMember) {
+      div = document.getElementById("profile");
+      div.innerHTML += `<br><form action="` + group.study_group_id + `/leave" method="POST"><input type="submit" name="leave" value="Leave Group"/></form>`;
+    }
+
+  </script>
+
+  {% endblock %}

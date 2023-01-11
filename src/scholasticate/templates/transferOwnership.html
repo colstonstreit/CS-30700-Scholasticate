@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block title %} Transfer Ownership {% endblock %} {% block content %}
+<p id="group" style="display: none;">{{ group }}</p>
+<p id="members" style="display: none;">{{ members }}</p>
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="../../static/css/transferOwnership.css">
+<link rel="stylesheet" href="../../static/css/palette.css">
+
+
+<body id="body">
+    <div id="transferOwnershipBox">
+        <div id="TOTitleBox">
+            Transfer Ownership
+        </div>
+        <form method="POST" action="transfer">
+            <div id="TODropdownBox">
+                <select id="groupMembers" name="groupMembers">
+        </select>
+            </div>
+            <div id="TOButtonBox">
+                <input type="submit" id="submit" class="TObutton" value="Transfer Ownership">
+            </div>
+        </form>
+    </div>
+
+</body>
+
+<script src="{{ url_for('static', filename='transferOwnership.js') }}" onload="onLoad();"></script>
+{% endblock %}

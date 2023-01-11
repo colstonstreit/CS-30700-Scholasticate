@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %} Login {% endblock %}
+{% block content %}
+<div class="bg">
+  <div class="mountain">
+    <div class="mountain-top">
+      <div class="mountain-cap-1"></div>
+      <div class="mountain-cap-2"></div>
+      <div class="mountain-cap-3"></div>
+    </div>
+  </div>
+  <div class="mountain-two">
+    <div class="mountain-top">
+      <div class="mountain-cap-1"></div>
+      <div class="mountain-cap-2"></div>
+      <div class="mountain-cap-3"></div>
+    </div>
+  </div>
+  <div class="mountain-three">
+    <div class="mountain-top">
+      <div class="mountain-cap-1"></div>
+      <div class="mountain-cap-2"></div>
+      <div class="mountain-cap-3"></div>
+    </div>
+    <div class="cloud"></div>
+  </div>
+  <p>{{ status }}</p>
+  <div class="Title">
+    Scholasticate
+  </div>
+
+  <form method="POST" action="/login">
+    <div class="LabelText" type="text">Email</div>
+    <input class="Box" type="text" name="email" placeholder="Email"><br>
+    <div class="LabelText" type="text">Password</div>
+    <input class="Box" type="password" name="password" placeholder="Password"><br>
+
+    <div class="Links">
+      <a href="/forgotPassword">Forgot Password?</a>
+      <a href="/forgotUsername">Forgot Username?</a>
+    </div>
+    <button class="loginButton ripple" class="loginButton" type="submit">Login</button>
+  </form>
+  <form action="/register">
+    <button class="loginButton ripple" class="loginButton" type="submit">Register</button>
+  </form>
+
+  {% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %} Register Account {% endblock %}
+{% block content %}
+<div class="registerbg">
+    <div class="Title">
+        Scholasticate
+    </div>
+    <form method="POST" action="/register">
+        <div class="LabelText" type="text">Name
+            <div class="LabelTextRight" type="text">School</div>
+        </div>
+        <input class="Box" type="text" name="name" placeholder="Full Name">
+        <select class="BoxRight" name="school">
+            {%for i in schools%}
+            <option value="{{i.get_id()}}">{{i.get_name()}}</option>
+            {%endfor%}
+        </select><br>
+        <br>
+        <div class="LabelText" type="text">Email
+            <div class="LabelTextRightPassword" type="text">Password
+            </div>
+        </div>
+        <input class="Box" type="text" name="email" id="email" placeholder="Email">
+        <input class="BoxRight" type="password" name="password" id="password" placeholder="Password"><br>
+        <div class="LabelText" type="text">Confirm Password</div>
+        <input class="Box" type="password" name="confirm_password" id="confirm_password"
+            placeholder="Confirm Password"><br>
+        <br>
+        <div class="registerLinks">
+            <a href="/login">Already have an account? Login Here.</a>
+        </div>
+        <input class="signUpButton ripple" type="submit" id="Submit" value="Register" disabled>
+    </form>
+
+    <p>Your password must be at least 10 characters and contain
+        at least one number, one special character, and have both uppercase and lowercase letters.</p>
+    <p id="emailResult"></p>
+    <p id="passwordResult"></p>
+
+    <script src="{{ url_for('static', filename='signup.js') }}" type="text/javascript"></script>
+    <script type="text/javascript">
+        document.getElementById("email").addEventListener("input", checkValidEmailAndPassword);
+        document.getElementById("password").addEventListener("input", checkValidEmailAndPassword);
+        document.getElementById("confirm_password").addEventListener("input", checkValidEmailAndPassword);
+    </script>
+</div>
+{% endblock %}

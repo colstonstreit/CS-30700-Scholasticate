@@ -1,0 +1,98 @@
+{% extends "base.html" %} {% block title %} Create Group {% endblock %} {% block content %}
+
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/createGroup.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/palette.css') }}">
+
+<body id="body">
+    <div class="createGroupTitle">
+        Create a study group
+    </div>
+
+    <form method="POST" action="{{ url_for('createGroupPost') }}">
+
+        <div class="grid">
+            <!-- Group name field -->
+            <div class="field">
+                <span class="fieldNameText">Group name</span>
+                <div>
+                    <input type="text" class="fieldBox" name="group_name" placeholder="Enter your study group's name" maxlength="35">
+                </div>
+            </div>
+
+            <!-- Course field -->
+            <div class="field">
+                <span class="fieldNameText">Course</span>
+                <div class="fieldBox">
+                    <label for="courseFilter">Search for Course: </label>
+					<input type="text" id="courseFilter" oninput="updateCoursesDropdown();"><br>
+
+					<select id="courseSelect" name="courseSelect" onchange="toggleCourse(this.value); this.selectedIndex = 0;">
+					  <!-- Automatically generate courses -->
+					</select>
+                </div>
+            </div>
+            <!-- Schedule field -->
+            <div class="field">
+                <span class="fieldNameText">Schedule</span>
+                <div>
+                    <input type="text" class="fieldBox" name="schedule" placeholder="Ex: MRF 11:00-13:00, F 17:00-20:00" title="Saturday = 'S', Sunday = 'U'">
+                </div>
+            </div>
+
+            <div class="grid2">
+                <!-- Max Members Field -->
+                <div class="field">
+                    <span class="fieldNameText">Max Members</span>
+                    <div>
+                        <input type="text" class="fieldBox" name="max_members" id="max_members" value="5">
+                    </div>
+                </div>
+                <!-- Privacy field -->
+                <div class="field">
+                    <span class="fieldNameText">Privacy</span>
+                    <div class="privacyGrid">
+                        <div>
+                            <input type="checkbox" class="fieldCheckbox" name="public">
+                        </div>
+                        <div>
+                            <span id="publicText">Public</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Description Field -->
+            <div class="field" id="descriptionLayout">
+                <span class="fieldNameText">Description</span>
+
+                <textarea id="descriptionBox" placeholder="Describe your study group" name="description"></textarea>
+
+            </div>
+            <!-- Map Location Field -->
+            <div class="field" id="locationLayout">
+                <span class="fieldNameText">Location</span><br>
+                <div id='map' class="mapStyling"></div>
+                <input type="text" id="latitude" name="latitude" style="display: none;">
+                <input type="text" id="longitude" name="longitude" style="display: none;">
+            </div>
+            <!-- Create group button -->
+            <div class="field">
+                <div>
+                    <input type="submit" value="Create group" class="buttonFilled" id="createGroupButton">
+                </div>
+            </div>
+
+        </div>
+        <!-- End of grid -->
+    </form>
+</body>
+
+<script src="{{ url_for('static', filename='createGroup.js') }}" onload="onLoad();"></script>
+<script src="{{ url_for('static', filename='location.js') }}"></script>
+<script>
+    MapManager.zoomToYou();
+</script>
+
+{% endblock %}

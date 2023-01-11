@@ -1,0 +1,131 @@
+ {% extends "base.html" %} {% block title %} Edit Group {% endblock %} {% block content %}
+<html>
+
+<link rel="stylesheet" href="../../static/css/editGroup.css">
+<link rel="stylesheet" href="../../static/css/palette.css">
+
+
+
+<body id="body">
+
+    <p id="group" style="display: none;">{{ group }}</p>
+
+    <div class="editGroupTitle">
+        Edit study group
+    </div>
+
+    <form method="POST" action="edit">
+        <div class="grid">
+            <!-- Group name field -->
+            <div class="field">
+                <span class="fieldNameText">Group name</span>
+                <div>
+                    <input type="text" class="fieldBox" name="name" id="name" placeholder="Enter your study group's name">
+                </div>
+            </div>
+
+            <!-- Course field -->
+            <div class="field">
+                <span class="fieldNameText">Course</span>
+                <div id="coursesDropdownGrid">
+                    <div id="lockBox">
+                        <div class="gg-lock"></div>
+                    </div>
+                    <div id="coursesDropdownBox">
+                        <!-- Course selection dropdown -->
+                        <select disabled id="coursesDropdown"></select>
+
+                        <!-- Invisible variable to store courseName -->
+                        <input type="text" name="course_name" id="course_name" style="display: none;">
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- Schedule field -->
+            <div class="field">
+                <span class="fieldNameText">Schedule</span>
+                <div>
+                    <input type="text" class="fieldBox" name="schedule" id="schedule" placeholder="Ex: MRF 11:00-13:00, F 17:00-20:00" title="Saturday = 'S', Sunday = 'U'">
+                </div>
+            </div>
+            <div class="grid2">
+                <!-- Max Members Field -->
+                <div class="field">
+                    <span class="fieldNameText">Max Members</span>
+                    <div>
+                        <input type="text" class="fieldBox" name="max_members" id="max_members" value="5">
+                    </div>
+                </div>
+                <!-- Privacy field -->
+                <div class="field">
+                    <span class="fieldNameText">Privacy</span>
+                    <div class="privacyGrid">
+                        <div>
+                            <input type="checkbox" class="fieldCheckbox" name="public" id="public">
+                        </div>
+                        <div>
+                            <span id="publicText">Public</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description Field -->
+            <div class="field" id="descriptionLayout">
+                <span class="fieldNameText">Description</span>
+
+                <textarea id="descriptionBox" placeholder="Describe your study group" name="description"></textarea>
+
+            </div>
+            <!-- Map Location Field -->
+            <div class="field" id="locationLayout">
+                <span class="fieldNameText">Location</span><br>
+                <div id='map' class="mapStyling"></div>
+                <input type="text" id="latitude" name="latitude" style="display: none;">
+                <input type="text" id="longitude" name="longitude" style="display: none;">
+            </div>
+
+        </div>
+
+
+        <div id="buttonGrid">
+            <div class="field">
+                <input type="submit" id="submit" value="Apply Changes" class="applyChangesButton">
+            </div>
+
+    </form>
+    <!-- End of editing form -->
+
+    <div class="field">
+        <form action="transfer" method="GET">
+            <input type="submit" name="transfer" value="Transfer Ownership" class="buttonUnfilled" id="transferButton">
+        </form>
+    </div>
+
+    <div class="field">
+        <form action="removeMember" method="GET">
+            <input type="submit" name="transfer" value="Remove Member" class="buttonUnfilled" id="transferButton">
+        </form>
+    </div>
+
+    <div class="field">
+        <form action="disband" method="POST">
+            <input type="submit" name="disband" value="Disband Group" class="buttonUnfilled" id="disbandButton" onclick="return confirm('Are you sure that you want to disband this group?')">
+        </form>
+
+    </div>
+
+    </div>
+
+
+
+</body>
+
+<script src="{{ url_for('static', filename='location.js') }}"></script>
+<script src="{{ url_for('static', filename='editGroup.js') }}" onload="onLoad();"></script>
+
+
+</html>
+
+{% endblock %}

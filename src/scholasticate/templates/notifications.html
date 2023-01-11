@@ -1,0 +1,171 @@
+{% extends "base.html" %} {% block title %} Notifications {% endblock %} {% block content %}
+
+<script src="{{ url_for('static', filename='friendUtil.js') }}"></script>
+
+<h1>Notifications</h1>
+
+<p id="noNotificationMessage" style="display: none;">You do not have any notifications! When you receive one, it will be displayed here.</p>
+
+<div id="notificationContainer">
+
+</div>
+
+<script src="{{ url_for('static', filename='acceptedUsersUtil.js') }}"></script>
+
+<script>
+    var data;
+
+
+    function deleteNotification(notification_id) {
+        let userID = window.sessionStorage.getItem('userID');
+        if (userID == null) return;
+
+        fetch(`/deleteNotification/${notification_id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then(response => response.json())
+            .then(response => {
+                if (response == 200) {
+                    //alert("Successfully deleted notification.");
+                    window.location.reload(false);
+                }
+            })
+            .catch(error => {
+                alert(`Request failed: Error: ${error}`);
+                window.location.reload(false);
+            });
+    }
+
+    function showNotifications() {
+
+        document.getElementById("notificationContainer").innerHTML = "";
+
+        for (let notification of UserInfo.notifications) {
+            data = notification.json_data;
+            //console.log(notification.type, data);
+            let html = "<div class='notificationWrapper'>"
+
+            switch (notification.type) {
+                case "MemberJoinedGroup": {
+                    html += `<p><a href="/profile/${data.member_id}">${data.member_name}</a> joined a group you are in! (<a href="/group/${data.group_id}">${data.group_name}</a>)</p>`;
+                    html += `<button onclick="deleteNotification(${notification.notification_id});">Delete Notification</button>`
+                    break;
+                }
+                case "MemberLeftGroup": {
+                    html += `<p><a href="/profile/${data.member_id}">${data.member_name}</a> left a group you are in. (<a href="/group/${data.group_id}">${data.group_name}</a>)</p>`;
+                    html += `<button onclick="deleteNotification(${notification.notification_id});">Delete Notification</button>`
+                    break;
+                }
+                case "InvitedToGroup": {
+                    html += `<p>You have been invited by <a href="/profile/${data.sender_id}">${data.sender_name}</a> to join
+                             the private group "<b><a href="/group/${data.group_id}">${data.group_name}</a></b>"!</p>`;
+
+                    html += `<form style="display:inline;" action="/group/${data.group_id}/acceptInvite" method="POST"><input type="submit" name="accept" value="Accept Invite"/></form>`;
+                    html += `<form style="display:inline;" action="/group/${data.group_id}/rejectInvite" method="POST"><input type="submit" name="reject" value="Reject Invite"/></form>`;
+                    break;
+                }
+                case "ReceivedFriendRequest": {
+                    html += `<p><a href="/profile/${data.sender_id}">${data.sender_name}</a> sent you a friend request!</p>`;
+                    html += `<button onclick="acceptFriendRequest(${data.sender_id});">Accept Request</button>`;
+                    html += `<button onclick="rejectFriendRequest(${data.sender_id});">Reject Request</button>`;
+                    break;
+                }
+                case "AcceptedFriendRequest": {
+                    html += `<p><a href="/profile/${data.recipient_id}">${data.recipient_name}</a> accepted your friend request!</p>`;
+                    html += `<button onclick="deleteNotification(${notification.notification_id});">Delete Notification</button>`
+                    break;
+                }
+                case "UnreadDirectMessage": {
+                    let numMessages = data.messages.length;
+
+                    if (!senderIsFriend(data.sender_id) && !senderIsAccepted(data.sender_id)) {
+                        // Message needs to be screened
+                        html += `<p><a href="/profile/${data.sender_id}">${data.sender_name}</a> sent you <a href="/messages/user/${data.sender_id}">${numMessages} message${numMessages == 1 ? '' : 's'}</a>.</p>`;
+                        html += "<ul>";
+                        for (message of data.messages) {
+                            html += `<li>${message}</li>`;
+                        }
+                        html += "</ul>";
+                        html += `<p>Would you like to continue the conversation, or reject the message?</p>`;
+                        html += '<button onclick="acceptUserUtil(data.sender_id);">Accept</button>';
+                        html += '<button onclick="ignoreSender();" form="none">Ignore</button>';
+                    } else {
+                        // Does not need screened
+                        html += `<p>You have <a href="/messages/user/${data.sender_id}">${numMessages} unread message${numMessages == 1 ? '' : 's'}</a> from <a href="/profile/${data.sender_id}">${data.sender_name}</a>!</p>`;
+                        html += "<ul>";
+                        for (message of data.messages) {
+                            html += `<li>${data.sender_name}: "${message}"</li>`;
+                        }
+                        html += "</ul>";
+                    }
+                    break;
+                }
+                case "UnreadGroupMessage": {
+                    let numMessages = data.messages.length;
+                    html += `<p>You have <a href="/messages/group/${data.group_id}">${numMessages} unread message${numMessages == 1 ? '' : 's'}</a> in the "<a href="/group/${data.group_id}">${data.group_name}</a>" group chat.</p>`;
+                    html += "<ul>";
+                    for (message of data.messages) {
+
+                        html += `<li>${message.sender_name}: "${message.message}"</li>`;
+                    }
+                    html += "</ul>";
+                    break;
+                }
+                case "UpcomingStudySession": {
+                    if (data.minutesUntil <= 0) {
+                        html += `<p>Your meeting with <b><a href="/group/${data.group_id}">${data.group_name}</a></b> started at ${data.startTime}.</p>`;
+                    } else {
+                        html += `<p>Don't forget! Your meeting with <b><a href="/group/${data.group_id}">${data.group_name}</a></b> starts in ${data.minutesUntil} minute${data.minutesUntil == 1 ? "" : "s"} (at ${data.startTime})!</p>`;
+                    }
+                    html += `<button onclick="deleteNotification(${notification.notification_id});">Delete Notification</button>`
+                    break;
+                }
+            }
+            html += "</div>"
+            document.getElementById("notificationContainer").innerHTML += html;
+        }
+
+        if (UserInfo.notifications.length == 0) {
+            document.getElementById("noNotificationMessage").style.display = "block";
+            document.getElementById("notificationContainer").style.display = "none";
+        } else {
+            document.getElementById("noNotificationMessage").style.display = "none";
+            document.getElementById("notificationContainer").style.display = "block";
+        }
+    }
+
+    function senderIsFriend(senderID) {
+        let friends = UserInfo.friends;
+        for (friend of friends) {
+            if (friend.student_id == senderID) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function senderIsAccepted(senderID) {
+
+        if (UserInfo.acceptedUsers != null) {
+            let accepted_users = UserInfo.acceptedUsers;
+            for (accepted_user of accepted_users) {
+                if (accepted_user.student_id == senderID) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    function ignoreSender() {
+        deleteNotification(notification.notification_id);
+    }
+
+    showNotifications();
+    setInterval(showNotifications, 1000 * 5);
+</script>
+
+{% endblock %}

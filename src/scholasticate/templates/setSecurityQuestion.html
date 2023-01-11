@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %} Change Security Question {% endblock %}
+{% block content %}
+<div class="registerbg">
+  <div class="mountain">
+      <div class="mountain-top">
+        <div class="mountain-cap-1"></div>
+        <div class="mountain-cap-2"></div>
+        <div class="mountain-cap-3"></div>
+      </div>
+    </div>
+    <div class="mountain-two">
+      <div class="mountain-top">
+        <div class="mountain-cap-1"></div>
+        <div class="mountain-cap-2"></div>
+        <div class="mountain-cap-3"></div>
+      </div>
+    </div>
+      <div class="mountain-three">
+      <div class="mountain-top">
+        <div class="mountain-cap-1"></div>
+        <div class="mountain-cap-2"></div>
+        <div class="mountain-cap-3"></div>
+      </div>
+      <div class="cloud"></div>
+  </div>
+  <div class="Title">
+      Scholasticate
+  </div>
+  <form method="POST" action="{{ url_for('setQuestionnairePost', id=profileID) }}">
+      <div class="LabelText" type="text">Select one of the following:
+      </div>
+      <select class="Box" name="question" id="question">
+      </select><br>
+      <br>
+      <div class="LabelText" type="text">Provide an answer here!
+      </div>
+      <input class="Box" type="text" name="answer" id="answer" placeholder="Answer">
+      <br>
+      <br>
+      <div class="registerLinks">
+          <a href="/login">Already have an account? Login Here.</a>
+      </div>
+      <input class="signUpButton" type="submit" id="Submit" value="Submit" disabled>
+  </form>
+  <script src="{{ url_for('static', filename='securityQuestion.js') }}" type="text/javascript" onload="onLoad();"></script>
+  <script type="text/javascript">
+      document.getElementById("answer").addEventListener("input", checkAnswer);
+  </script>
+</div>
+{% endblock %}

@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+{% block title %} Student Profile {% endblock %}
+{% block content %}
+<p id="studentInfo" style="display: none;">{{ studentInfo }}</p>
+
+<div style="text-align: center;" id=profile>
+	<h1><span id="name"></span>'s Profile</h1>
+	<img style="text-align: center;" id="profilePicture" name="profilePicture"
+		src="{{ url_for('static', filename='img/defaultProfilePic.png') }}" alt="Profile Picture" width="100"
+		height="100"><br>
+
+	<span style="text-align: center;" id="status"></span>
+	<p>Bio: <span id="bio"></span></p>
+	<p>School: <span id="school"></span></p>
+
+	<div id="locationData">
+		<p>Latitude = <span id="latitude"></span> | Longitude = <span id="longitude"></span><br>
+			Location Last Updated: <span id="locationLastUpdated"></span></p>
+	</div>
+
+	<p>Wardrobe: </p>
+	<ul id="wardrobe"></ul>
+
+	<p>Courses: </p>
+	<ul id="courseList"></ul>
+
+	<p>Course History: </p>
+	<ul id="courseHistoryList"></ul>
+
+	<table id="availability" width="500"
+		style="border: 1px solid black; text-align: center; margin-left: auto; margin-right: auto;"></table><br><br>
+
+	<p>Friends: </p>
+	<ul id="friendList"></ul>
+
+	<div id="studyGroupListDiv" style="display: none;">
+		<p>Study Groups: </p>
+		<ul id="groupList"></ul>
+	</div>
+</div>
+
+
+<script src="{{ url_for('static', filename='friendUtil.js') }}"></script>
+<script>
+
+	var studentInfo = JSON.parse(document.getElementById("studentInfo").innerText);
+
+	document.getElementById("name").innerHTML = studentInfo.student.name;
+	if (studentInfo.profile_picture != null) {
+		document.getElementById("profilePicture").src = studentInfo.profile_picture.picture_string;
+	}
+	document.getElementById("bio").innerHTML = studentInfo.student.bio;
+	document.getElementById("school").innerHTML = studentInfo.school.name;
+
+	if (studentInfo.student.student_id == UserInfo.student.student_id || (studentInfo.sharing == true && studentInfo.online_status == true)) {
+		document.getElementById("latitude").innerHTML = studentInfo.student.latitude;
+		document.getElementById("longitude").innerHTML = studentInfo.student.longitude;
+		document.getElementById("locationLastUpdated").innerHTML = new Date(studentInfo.student.location_last_updated * 1000);
+	} else {
+		document.getElementById("locationData").style.display = "none";
+	}
+
+	if (studentInfo.online_status == true) {
+		if (studentInfo.sharing == true) {
+			document.getElementById("status").innerHTML = "Active"
+		} else {
+			document.getElementById("status").innerHTML = "Online"
+		}
+	} else {
+		if (studentInfo.invisible == true) {
+			// Only the profile owner will receive this
+			document.getElementById("status").innerHTML = "Invisible"
+		} else {
+			document.getElementById("status").innerHTML = "Offline"
+		}
+	}
+
+	for (let article of studentInfo.wardrobe) {
+		let colorText = convertColorToHex(article.color_red, article.color_green, article.color_blue)
+		document.getElementById("wardrobe").innerHTML += `<li style="color:${colorText};">${article.brand} ${article.article}</li>`
+	}
+
+	function convertColorToHex(redVal, greenVal, blueVal) {
+		redHex = redVal.toString(16);
+		if (redHex.length == 1) {
+			redHex = "0" + redHex
+		}
+		greenHex = greenVal.toString(16);
+		if (greenHex.length == 1) {
+			greenHex = "0" + greenHex
+		}
+		blueHex = blueVal.toString(16);
+		if (blueHex.length == 1) {
+			blueHex = "0" + blueHex
+		}
+		return '#' + redHex + greenHex + blueHex
+	}
+
+	for (let course of studentInfo.currentCourses) {
+		document.getElementById("courseList").innerHTML += `<li><a href="{{ url_for('course', id='') }}${course.course_id}">${course.course_name} - ${course.course_title}</a></li>`
+	}
+
+	for (let course of studentInfo.pastCourses) {
+		document.getElementById("courseHistoryList").innerHTML += `<li><a href="{{ url_for('course', id='') }}${course.course_id}">${course.course_name} - ${course.course_title}</a></li>`
+	}
+
+	let isFriend = false;
+	var userID = UserInfo.id;
+	for (let friend of UserInfo.friends) {
+		if (userID != null && friend.student_id == studentInfo.student.student_id) isFriend = true;
+		document.getElementById("friendList").innerHTML += `<li><a href="/profile/${friend.student_id}">${friend.name}</a></li>`;
+	}
+
+	let sentFriendRequestToStudent = false;
+	for (let friendRequest of UserInfo.sentFriendRequests) {
+		if (friendRequest.recipient_student_id == studentInfo.student.student_id) {
+			sentFriendRequestToStudent = true;
+			break;
+		}
+	}
+	let receivedFriendRequestFromStudent = false;
+	for (let friendRequest of UserInfo.receivedFriendRequests) {
+		if (friendRequest.sender_student_id == studentInfo.student.student_id) {
+			receivedFriendRequestFromStudent = true;
+			break;
+		}
+	}
+
+	let list = document.getElementById("groupList");
+	for (let group of studentInfo.studyGroups) {
+		list.innerHTML += `<li><a href="{{ url_for('viewGroup', group_id='') }}${group.study_group_id}">${group.name}</a></li>`;
+	}
+	document.getElementById("studyGroupListDiv").style.display = "block";
+
+	if (studentInfo.student.student_id == userID) {
+		document.getElementById('profile').innerHTML += `<br><a href="/profile/${userID}/edit"><button class="button ripple">Edit Profile</button></a>`;
+		if (studentInfo.invisible == true) {
+			document.getElementById('status').innerHTML += `<br><form method="POST" action="/invisible"><button class="button ripple" type="submit" id="invisible">Go Online</button></form>`;
+		} else {
+			document.getElementById('status').innerHTML += `<br><form method="POST" action="/invisible"><input class="button ripple" type="submit" id="invisible" value="Go Invisible"></form>`;
+		}
+	} else {
+
+		let student = studentInfo.student;
+		document.getElementById('profile').innerHTML += `<br><a href="/profile/${student.student_id}/invite"><button>Invite to Group</button></a><br><br>`;
+
+		if (isFriend) {
+			document.getElementById('profile').innerHTML += `<button type="button" onclick="removeFriend(${student.student_id});">Remove Friend</button>`;
+		} else if (sentFriendRequestToStudent) {
+			document.getElementById('profile').innerHTML += `<button type="button" onclick="cancelFriendRequest(${student.student_id});">Cancel Friend Request</button>`;
+		} else if (receivedFriendRequestFromStudent) {
+			document.getElementById('profile').innerHTML += `<button type="button" onclick="acceptFriendRequest(${student.student_id});">Accept Friend Request</button>`;
+			document.getElementById('profile').innerHTML += `<button type="button" onclick="rejectFriendRequest(${student.student_id});">Reject Friend Request</button>`;
+		} else if (student.student_id != userID) {
+			document.getElementById('profile').innerHTML += `<button type="button" onclick="sendFriendRequest(${student.student_id});">Add Friend</button>`;
+		}
+
+		if (student.student_id != userID) {
+			document.getElementById('profile').innerHTML += `<a href="/messages/user/${student.student_id}"><button type="button">Send Message</button></a>`;
+		}
+
+	}
+
+	// Generating HTML for Availability
+
+	let availability = {
+		"Sunday": [],
+		"Monday": [],
+		"Tuesday": [],
+		"Wednesday": [],
+		"Thursday": [],
+		"Friday": [],
+		"Saturday": []
+	};
+
+	for (let timeItem of UserInfo.availability) {
+		let startTime = timeItem.start_time;
+		let endTime = timeItem.end_time;
+		let timeString = startTime + "-" + endTime;
+		availability[timeItem.weekday].push(timeString);
+	}
+
+	let table = document.getElementById("availability");
+	let html = "";
+	borderStyle = `style="border: 1px solid black;"`;
+	html += `<tr ${borderStyle}><th ${borderStyle} colspan="2">Availability</th></tr>`;
+	html += `<tr ${borderStyle}><th ${borderStyle}>Day</th><th ${borderStyle}>Times</th></tr>`;
+	for (day in availability) {
+		html += `<tr ${borderStyle}>`;
+		html += `<td ${borderStyle}>${day}</td>`;
+		html += `<td ${borderStyle}>`;
+		if (availability[day].length > 0) {
+			style = `style="border: 0px solid black; width: 50%;"`;
+			html += `<table style="border: 0px solid black; width: 100%;">`;
+			for (time of availability[day]) {
+				html += `<tr ${style}><td ${style}>${time}</td></tr>`;
+			}
+			html += `</table>`;
+		} else {
+			html += "Unavailable";
+		}
+		html += "</td>"
+		html += `</tr>`;
+	}
+	table.innerHTML = html;
+
+</script>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %} Edit group {% endblock %}
+{% block content %}
+  <p id="group" style="display: none;">{{ group }}</p>
+
+  <style>
+    h2 {
+      font-size: 18px;
+    }
+  </style>
+
+  <h1>Edit your group profile:</h1>
+  <form method="POST" action="edit">
+
+    <label for="location"><h2>Location:</h2></label>
+    <div id='map' style='width: 600px; height: 450px;'></div>
+    <input type="text" id="latitude" name="latitude" style="display: none;">
+    <input type="text" id="longitude" name="longitude" style="display:none;">
+
+    <label for="name">
+      <h2>Name: </h2>
+    </label>
+    <input type="text" id="name" name="name"><br><br>
+    <label for="schedule">
+      <h2>Schedule: </h2>
+    </label>
+    <input type="text" id="schedule" name="schedule"><br><br>
+    <label for="description">
+      <h2>Description: </h2>
+    </label>
+    <textarea id="description" name="description" cols="50" rows="5"></textarea><br><br>
+
+    <label for="public">Public: </label>
+    <input type="checkbox" id="public" name="public"><br><br>
+
+    <input type="submit" id="submit" value="Submit">
+  </form>
+
+  <form action="transfer" method="GET">
+    <input type="submit" name="transfer" value="Transfer Ownership"/>
+  </form>
+
+  <form action="disband" method="POST">
+    <input type="submit" name="disband" value="Disband Group"/>
+  </form>
+
+  <script src="{{ url_for('static', filename='location.js') }}"></script>
+  <script>
+    var group = JSON.parse(document.getElementById("group").innerText);
+
+    document.getElementById("name").defaultValue = group.name;
+    document.getElementById("schedule").defaultValue = group.schedule;
+    document.getElementById("description").defaultValue = group.description;
+    document.getElementById("latitude").defaultValue = group.latitude;
+    document.getElementById("longitude").defaultValue = group.longitude;
+    MapManager.zoomTo(group.latitude, group.longitude, 15);
+    marker = MapManager.createMarker(group.latitude, group.longitude, "#FF0000", "<p>Group Location!</p>");
+    MapManager.addMarker("group", id = "groupLocation", marker);
+    document.getElementById("public").checked = group.public != 0;
+
+  </script>
+
+{% endblock %}
