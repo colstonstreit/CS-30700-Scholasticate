@@ -28,6 +28,11 @@ class Database:
 			sqlFile.close()
 		else:
 			self.conn = sqlite3.connect(current_app.config['DATABASE'])
+			# Run database.sql if there isn't anything yet
+			if os.path.getsize(current_app.config['DATABASE']) == 0:
+				sqlFile = open(os.path.join(os.path.dirname(__file__), '../database.sql'))
+				self.conn.executescript(sqlFile.read())
+
 		self.conn.row_factory = sqlite3.Row
 		self.conn.execute('PRAGMA foreign_keys = ON')
 		self.conn.commit()
@@ -286,4 +291,4 @@ class Database:
 			output.append(self.get_student(i['student_id']))
 		return output
 
-	
+
